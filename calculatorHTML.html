@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Hesap Makinesi</title>
+    <link rel="stylesheet" href="bootstrap-4.6.2.min.css">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: transparent;
+        }
+         body {
+          font-family: 'Roboto', sans-serif; /* Örnek bir modern font */
+       }
+
+        button {
+          font-size: 1.2em;
+        }   
+
+        #calculator {
+            background-color: #f2f2f2;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            overflow: hidden;
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 2px solid #45a049; /* Input alanına yeşil bir çerçeve */
+            text-align: right;
+            font-size: 1.5em;
+            outline: none;
+            background-color: #e6e6e6;
+            border-bottom: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s ease;
+        }
+        input:focus {
+            border: 2px solid #45a049; /* Input alanı odaklandığında çerçeve rengini değiştir */
+      }
+
+        button {
+            width: 23.5%;
+            padding: 15px;
+            box-sizing: border-box;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #d1d1d1;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+          background-color: #45a049; /* Hover durumunda biraz koyu yeşil */
+          transform: scale(1.05);
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        button.operator {
+            background-color: #4CAF50; /* Yeşil renk örneği */
+            color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+        }
+
+        button.double {
+            width: 23.5%;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="display" disabled aria-label="Calculator Display">
+        <button class="operator" onclick="clearEntry()" aria-label="Clear Entry">CE</button>
+        <button class="operator" onclick="clearAll()" aria-label="Clear All">C</button>
+        <button class="operator" onclick="appendToDisplay('(')" aria-label="Open Parenthesis">(</button>
+        <button class="operator" onclick="appendToDisplay(')')" aria-label="Close Parenthesis">)</button>
+        <button class="operator" onclick="applyFunction('squareRoot')" aria-label="Square Root">√</button>
+        <button class="operator" onclick="applyFunction('square')" aria-label="Square">x²</button>
+        <button class="operator" onclick="applyFunction('reciprocal')" aria-label="Reciprocal">1/x</button>
+        <button class="operator" onclick="backspace()" aria-label="Backspace">⌫</button>
+        <button class="operator" onclick="toggleSign()">+/-</button>
+        <button class="operator" onclick="applyFunction('sin')" aria-label="Sine">sin</button>
+        <button class="operator" onclick="applyFunction('cos')" aria-label="Cosine">cos</button>
+        <button class="operator" onclick="appendToDisplay('/')">/</button>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button class="operator" onclick="appendToDisplay('*')">*</button>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button class="operator" onclick="appendToDisplay('-')">-</button>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button class="operator" onclick="appendToDisplay('+')">+</button>
+        <button class="operator" onclick="applyFunction('percent')" aria-label="Percent">%</button>
+        <button class="double" onclick="appendToDisplay('0')">0</button>
+        <button class= "operator" onclick="appendToDisplay('.')">.</button>
+        <button class="operator" onclick="calculate()" aria-label="Equals">=</button>
+    </div>
+     <!-- jQuery (necessary for Bootstrap's Javascript plugins)-->
+   <script src="js/jquery-3.4.1.min.js"></script>
+
+   <!-- Include all compiled plugins (below), or include individual files as needed-->
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap-4.6.2.js"></script>
+
+    <!-- app.js -->
+    <script src="js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearAll() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculate() {
+            var display = document.getElementById('display');
+            try {
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = 'Error';
+            }
+        }
+
+        function applyFunction(func) {
+            var display = document.getElementById('display');
+            var currentValue = parseFloat(display.value);
+            switch (func) {
+                case 'squareRoot':
+                    display.value = Math.sqrt(currentValue);
+                    break;
+                case 'square':
+                    display.value = currentValue * currentValue;
+                    break;
+                case 'reciprocal':
+                    display.value = 1 / currentValue;
+                    break;
+                case 'percent':
+                    display.value = currentValue / 100;
+                    break;
+                case 'sin':
+                    display.value = Math.sin(currentValue);
+                    break;
+                case 'cos':
+                    display.value = Math.cos(currentValue);
+                    break;
+                case 'toggleSign':
+                    toggleSign();
+                    break;
+                case 'backspace':
+                    backspace();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function toggleSign() {
+            var display = document.getElementById('display');
+            display.value = parseFloat(display.value) * -1;
+        }
+
+        function backspace() {
+            var display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function clearEntry() {
+            var display = document.getElementById('display');
+            display.value = '';
+        }
+    </script>
+</body>
+</html>
